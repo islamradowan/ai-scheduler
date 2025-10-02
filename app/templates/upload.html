@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Exam Scheduler</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>AI Exam Scheduler</h1>
+        
+        <div class="upload-section">
+            <h2>Upload CSV Files</h2>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="file-input">
+                    <label for="students">Students CSV:</label>
+                    <input type="file" id="students" name="students" accept=".csv" required>
+                </div>
+                
+                <div class="file-input">
+                    <label for="courses">Courses CSV:</label>
+                    <input type="file" id="courses" name="courses" accept=".csv" required>
+                </div>
+                
+                <div class="file-input">
+                    <label for="rooms">Rooms CSV:</label>
+                    <input type="file" id="rooms" name="rooms" accept=".csv" required>
+                </div>
+                
+                <button type="button" onclick="uploadFiles()">Upload Files</button>
+            </form>
+            
+            <div id="uploadStatus"></div>
+        </div>
+        
+        <div class="schedule-section">
+            <h2>Generate Schedule</h2>
+            <div class="config-inputs">
+                <label for="examStartDate">Exam Start Date:</label>
+                <input type="date" id="examStartDate" value="2024-05-01">
+                
+                <label for="examEndDate">Exam End Date:</label>
+                <input type="date" id="examEndDate" value="2024-05-10">
+                
+                <div class="time-slots-section">
+                    <h3>Exam Time Slots</h3>
+                    <div id="timeSlots">
+                        <div class="time-slot">
+                            <label>Slot 1:</label>
+                            <input type="time" class="start-time" value="09:00">
+                            <span>to</span>
+                            <input type="time" class="end-time" value="12:00">
+                            <button type="button" onclick="removeTimeSlot(this)">Remove</button>
+                        </div>
+                        <div class="time-slot">
+                            <label>Slot 2:</label>
+                            <input type="time" class="start-time" value="14:00">
+                            <span>to</span>
+                            <input type="time" class="end-time" value="17:00">
+                            <button type="button" onclick="removeTimeSlot(this)">Remove</button>
+                        </div>
+                    </div>
+                    <button type="button" onclick="addTimeSlot()">Add Time Slot</button>
+                </div>
+                
+                <label for="maxExams">Max Exams Per Day:</label>
+                <input type="number" id="maxExams" value="10" min="1">
+                
+                <label for="bufferDays">Buffer Days:</label>
+                <input type="number" id="bufferDays" value="2" min="0">
+            </div>
+            
+            <button type="button" onclick="generateSchedule()" id="scheduleBtn" disabled>Generate Schedule</button>
+            <div id="scheduleStatus"></div>
+        </div>
+    </div>
+
+    <script>
+        let uploadedPaths = {};
+        
+        async function uploadFiles() {
+            const formData = new FormData();
+            formData.append('students', document.getElementById('students').files[0]);
+            formData.append('courses', document.getElementById('courses').files[0]);
+            formData.append('rooms', document.getElementById('rooms').files[0]);
+            
+            document.getElementById('uploadStatus').innerHTML = 'Uploading...';
+            
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'ok') {
+                    uploadedPaths = result.paths;
+                    document.getElementById('uploadStatus').innerHTML = 'Files uploaded successfully!';
+                    document.getElementById('scheduleBtn').disabled = false;
+                } else {
+                    document.getElementById('uploadStatus').innerHTML = 'Upload failed!';
+                }
+            } catch (error) {
+                document.getElementById('uploadStatus').innerHTML = 'Upload error: ' + error.message;
+            }
+        }
+        
+        function addTimeSlot() {
+            const timeSlotsDiv = document.getElementById('timeSlots');
+            const slotCount = timeSlotsDiv.children.length + 1;
+            
+            const newSlot = document.createElement('div');
+            newSlot.className = 'time-slot';
+            newSlot.innerHTML = `
+                <label>Slot ${slotCount}:</label>
+                <input type="time" class="start-time" value="09:00">
+                <span>to</span>
+                <input type="time" class="end-time" value="12:00">
+                <button type="button" onclick="removeTimeSlot(this)">Remove</button>
+            `;
+            
+            timeSlotsDiv.appendChild(newSlot);
+        }
+        
+        function removeTimeSlot(button) {
+            const timeSlot = button.parentElement;
+            timeSlot.remove();
+            
+            // Update slot labels
+            const slots = document.querySelectorAll('.time-slot');
+            slots.forEach((slot, index) => {
+                slot.querySelector('label').textContent = `Slot ${index + 1}:`;
+            });
+        }
+        
+        function getTimeSlots() {
+            const slots = [];
+            const timeSlots = document.querySelectorAll('.time-slot');
+            
+            timeSlots.forEach(slot => {
+                const startTime = slot.querySelector('.start-time').value;
+                const endTime = slot.querySelector('.end-time').value;
+                
+                if (startTime && endTime) {
+                    slots.push({
+                        start_time: startTime,
+                        end_time: endTime
+                    });
+                }
+            });
+            
+            return slots;
+        }
+        
+        async function generateSchedule() {
+            const scheduleData = {
+                students_csv_path: uploadedPaths.students,
+                courses_csv_path: uploadedPaths.courses,
+                rooms_csv_path: uploadedPaths.rooms,
+                exam_start_date: document.getElementById('examStartDate').value,
+                exam_end_date: document.getElementById('examEndDate').value,
+                exam_time_slots: getTimeSlots(),
+                max_global_exams_per_day: parseInt(document.getElementById('maxExams').value),
+                buffer_days: parseInt(document.getElementById('bufferDays').value)
+            };
+            
+            document.getElementById('scheduleStatus').innerHTML = 'Generating schedule...';
+            
+            try {
+                const response = await fetch('/schedule', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(scheduleData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    window.location.href = '/results?score=' + result.score + 
+                                          '&excel=' + encodeURIComponent(result.files.excel) + 
+                                          '&pdf=' + encodeURIComponent(result.files.pdf);
+                } else {
+                    document.getElementById('scheduleStatus').innerHTML = 'Schedule generation failed!';
+                }
+            } catch (error) {
+                document.getElementById('scheduleStatus').innerHTML = 'Schedule error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

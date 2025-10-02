@@ -1,0 +1,7 @@
+rule,value
+max_global_exams_per_day,2
+exam_days_regular,"Sat,Sun,Tue,Wed"
+exam_days_evening,"Fri,Sat"
+buffer_days_regular,1
+buffer_days_evening,0
+priority_courses,"22141,22341"

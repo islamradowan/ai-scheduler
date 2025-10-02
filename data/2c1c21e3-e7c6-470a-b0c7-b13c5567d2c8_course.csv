@@ -1,0 +1,65 @@
+course_id,code,name,semester,department
+ACT201,ACT201,Principles of Accounting,1,ACT
+BUS105,BUS105,Introduction to Business,1,BUS
+CHM201,CHM201,Chemistry,1,CHM
+CSE103,CSE103,Structured Programming,1,CSE
+CSE104,CSE104,Structured Programming Laboratory,1,CSE
+CSE109,CSE109,Computer Fundamentals,1,CSE
+CSE110,CSE110,Computer Fundamentals Laboratory,1,CSE
+ENG103,ENG103,Listening & Speaking,1,ENG
+ENG107,ENG107,Reading & Grammar,1,ENG
+ENG111,ENG111,Writing,1,ENG
+MAT101,MAT101,Calculus I,1,MAT
+PHY101,PHY101,Physics I,1,PHY
+PHY102,PHY102,Physics I Lab,1,PHY
+SOC101,SOC101,Introduction to Sociology,1,SOC
+CSE106,CSE106,Advanced Programming Laboratory,2,CSE
+CSE211,CSE211,Discrete Mathematics,2,CSE
+CSE223,CSE223,Object Oriented Programming,2,CSE
+CSE224,CSE224,Object Oriented Programming Laboratory,2,CSE
+EEE111,EEE111,Basic Electrical Circuits,2,EEE
+EEE112,EEE112,Basic Electrical Circuits Laboratory,2,EEE
+MAT103,MAT103,Calculus II,2,MAT
+MAT205,MAT205,"Linear Algebra, Geometry and Complex Variables",2,MAT
+STS301,STS301,Fundamentals of Statistics,2,STS
+CSE227,CSE227,Logic Design and Digital Systems,3,CSE
+CSE228,CSE228,Logic Design and Digital Systems Laboratory,3,CSE
+CSE231,CSE231,Data Structures,3,CSE
+CSE232,CSE232,Data Structures Laboratory,3,CSE
+EEE231,EEE231,Electronics I,3,EEE
+EEE232,EEE232,Electronics I Laboratory,3,EEE
+HUM201,HUM201,Value and Ethics,3,HUM
+MAT201,MAT201,Differential Equations,3,MAT
+PHY103,PHY103,Physics II,3,PHY
+EEE233,EEE233,Electronics II,4,EEE
+EEE234,EEE234,Electronics II Lab,4,EEE
+CSE313,CSE313,"Microprocessor, Microcontrollers and Assembly Language Programming",4,CSE
+CSE314,CSE314,"Microprocessor, Microcontrollers and Assembly Language Programming Lab",4,CSE
+CSE315,CSE315,Theory of Computation,4,CSE
+CSE327,CSE327,Design and Analysis of Algorithm,4,CSE
+CSE328,CSE328,Design and Analysis of Algorithm Lab,4,CSE
+CSE331,CSE331,Data Communication,4,CSE
+CSE311,CSE311,Operating System,6,CSE
+CSE312,CSE312,Operating System Lab,6,CSE
+CSE321,CSE321,Computer Architecture and Organization,6,CSE
+CSE325,CSE325,Computer Peripherals and Interfacing,6,CSE
+CSE326,CSE326,Computer Peripherals and Interfacing Lab,6,CSE
+CSE333,CSE333,Database Management Systems,6,CSE
+CSE334,CSE334,Database Management Systems Lab,6,CSE
+CSE335,CSE335,Mathematical Analysis for Computer Science,6,CSE
+MAT209,MAT209,Numerical Methods,6,MAT
+CSE413,CSE413,Compiler Design,7,CSE
+CSE414,CSE414,Compiler Design Laboratory,7,CSE
+CSE423,CSE423,Software Engineering,7,CSE
+CSE424,CSE424,Software Engineering Laboratory,7,CSE
+CSE411,CSE411,Computer Graphics,8,CSE
+CSE412,CSE412,Computer Graphics Laboratory,8,CSE
+CSE415,CSE415,Computer Networks,8,CSE
+CSE416,CSE416,Computer Networks Laboratory,8,CSE
+CSE431,CSE431,Artificial Intelligence,8,CSE
+CSE432,CSE432,Artificial Intelligence Laboratory,8,CSE
+CSE477,CSE477,Thesis/Project,8,CSE
+CSE434,CSE434,Web Programming Laboratory,9,CSE
+CSE441,CSE441,Information Security and Cyber Law,9,CSE
+CSE487,CSE487,Machine Learning,9,CSE
+CSE495,CSE495,Digital Image Processing,9,CSE

@@ -1,0 +1,15 @@
+# Base requirements - later prompts will append additional libraries
+fastapi
+uvicorn
+sqlalchemy
+pandas
+networkx
+deap
+ortools
+openpyxl
+reportlab
+jinja2
+pydantic
+pyyaml
+python-multipart
+pytest

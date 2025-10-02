@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Schedule Results - AI Exam Scheduler</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Schedule Results</h1>
+        
+        <div class="results-section">
+            <h2>Schedule Summary</h2>
+            <div class="summary-table">
+                <table>
+                    <tr>
+                        <td><strong>Score:</strong></td>
+                        <td id="score">-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Status:</strong></td>
+                        <td>Generation Complete</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Generated:</strong></td>
+                        <td id="timestamp">-</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <div class="downloads-section">
+            <h2>Download Files</h2>
+            <div class="download-links">
+                <a href="#" id="excelLink" class="download-btn" download>
+                    📊 Download Excel Timetable
+                </a>
+                
+                <a href="#" id="pdfLink" class="download-btn" download>
+                    📄 Download PDF Report
+                </a>
+            </div>
+        </div>
+        
+        <div class="actions-section">
+            <button onclick="window.location.href='/'" class="action-btn">
+                🔄 Generate New Schedule
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Parse URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const score = urlParams.get('score');
+        const excelPath = urlParams.get('excel');
+        const pdfPath = urlParams.get('pdf');
+        
+        // Update page content
+        if (score) {
+            document.getElementById('score').textContent = parseFloat(score).toFixed(2);
+        }
+        
+        if (excelPath) {
+            document.getElementById('excelLink').href = '/' + excelPath;
+        }
+        
+        if (pdfPath) {
+            document.getElementById('pdfLink').href = '/' + pdfPath;
+        }
+        
+        document.getElementById('timestamp').textContent = new Date().toLocaleString();
+    </script>
+</body>
+</html>

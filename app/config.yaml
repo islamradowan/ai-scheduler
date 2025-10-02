@@ -1,0 +1,28 @@
+# Global scheduling rules
+max_exams_per_student_per_day: 1
+max_global_exams_per_day: 10
+buffer_days: 2
+
+# Exam scheduling
+exam_days:
+  - "2024-05-01"
+  - "2024-05-02"
+  - "2024-05-03"
+  - "2024-05-04"
+  - "2024-05-05"
+
+exam_slots:
+  - {start_time: "09:00", end_time: "12:00"}
+  - {start_time: "14:00", end_time: "17:00"}
+
+# Room allocation
+max_rooms_per_teacher: 3
+column_interleaving: true
+
+# Genetic Algorithm optimization
+optimization:
+  population_size: 50
+  generations: 100
+  mutation_rate: 0.1
+  crossover_rate: 0.8
+  tournament_size: 3
