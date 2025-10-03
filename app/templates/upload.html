@@ -26,6 +26,12 @@
                     <input type="file" id="rooms" name="rooms" accept=".csv" required>
                 </div>
                 
+                <div class="file-input">
+                    <label for="holidays">Holidays CSV (Optional):</label>
+                    <input type="file" id="holidays" name="holidays" accept=".csv">
+                    <small>If not provided, default Bangladesh holidays will be used</small>
+                </div>
+                
                 <button type="button" onclick="uploadFiles()">Upload Files</button>
             </form>
             
@@ -82,6 +88,12 @@
             formData.append('students', document.getElementById('students').files[0]);
             formData.append('courses', document.getElementById('courses').files[0]);
             formData.append('rooms', document.getElementById('rooms').files[0]);
+            
+            // Add holidays file if selected
+            const holidaysFile = document.getElementById('holidays').files[0];
+            if (holidaysFile) {
+                formData.append('holidays', holidaysFile);
+            }
             
             document.getElementById('uploadStatus').innerHTML = 'Uploading...';
             
@@ -157,6 +169,7 @@
                 students_csv_path: uploadedPaths.students,
                 courses_csv_path: uploadedPaths.courses,
                 rooms_csv_path: uploadedPaths.rooms,
+                holidays_csv_path: uploadedPaths.holidays || null,
                 exam_start_date: document.getElementById('examStartDate').value,
                 exam_end_date: document.getElementById('examEndDate').value,
                 exam_time_slots: getTimeSlots(),

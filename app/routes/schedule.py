@@ -11,6 +11,7 @@ from app.room_allocator import allocate_rooms
 from app.invigilator_assigner import assign_invigilators
 from app.conflict_handler import detect_unschedulable, schedule_makeup
 from app.exporter import export_excel, export_pdf
+from app.holiday_manager import load_holidays, filter_holidays_from_dates
 
 router = APIRouter()
 
@@ -18,6 +19,7 @@ class ScheduleRequest(BaseModel):
     students_csv_path: str
     courses_csv_path: str
     rooms_csv_path: str
+    holidays_csv_path: Optional[str] = None
     exam_start_date: Optional[str] = None
     exam_end_date: Optional[str] = None
     exam_time_slots: Optional[list] = None
@@ -49,6 +51,11 @@ async def run_schedule_pipeline(request: ScheduleRequest):
             while current_date <= end_date:
                 exam_days.append(current_date.strftime('%Y-%m-%d'))
                 current_date += timedelta(days=1)
+            
+            # Load holidays and filter them out
+            holidays_csv_path = request.holidays_csv_path or "data/holidays.csv"
+            holidays = load_holidays(holidays_csv_path)
+            exam_days = filter_holidays_from_dates(exam_days, holidays)
             
             config['exam_days'] = exam_days
         

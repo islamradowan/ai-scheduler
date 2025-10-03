@@ -14,14 +14,32 @@ def build_conflict_graph(enrollments_df):
     """
     G = nx.Graph()
     
+    # Debug: Check enrollments DataFrame
+    print(f"DEBUG: Enrollments DataFrame shape: {enrollments_df.shape}")
+    print(f"DEBUG: Enrollments columns: {list(enrollments_df.columns)}")
+    if len(enrollments_df) > 0:
+        print(f"DEBUG: First few enrollments:\n{enrollments_df.head()}")
+    else:
+        print("DEBUG: Enrollments DataFrame is empty!")
+        return G
+    
+    # Check if required columns exist
+    if 'course_id' not in enrollments_df.columns:
+        raise ValueError(f"Missing 'course_id' column in enrollments DataFrame. Available columns: {list(enrollments_df.columns)}")
+    if 'student_id' not in enrollments_df.columns:
+        raise ValueError(f"Missing 'student_id' column in enrollments DataFrame. Available columns: {list(enrollments_df.columns)}")
+    
     # Get all unique courses
     courses = enrollments_df['course_id'].unique()
+    print(f"DEBUG: Found {len(courses)} unique courses: {courses}")
     G.add_nodes_from(courses)
     
     # Group enrollments by student to find conflicts
     student_courses = enrollments_df.groupby('student_id')['course_id'].apply(list).to_dict()
+    print(f"DEBUG: Student-course mapping: {dict(list(student_courses.items())[:3])}...")  # Show first 3
     
     # Add edges between courses that share students
+    edges_added = 0
     for student_id, course_list in student_courses.items():
         # Add edge between every pair of courses for this student
         for i in range(len(course_list)):
@@ -29,7 +47,9 @@ def build_conflict_graph(enrollments_df):
                 course1, course2 = course_list[i], course_list[j]
                 if not G.has_edge(course1, course2):
                     G.add_edge(course1, course2)
+                    edges_added += 1
     
+    print(f"DEBUG: Added {edges_added} conflict edges to graph")
     return G
 
 def graph_stats(G):

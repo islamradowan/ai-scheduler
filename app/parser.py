@@ -49,6 +49,8 @@ def parse_csvs(students_csv_path, courses_csv_path, rooms_csv_path):
     
     # Parse enrollments from students' enrolled_courses column
     enrollments = []
+    print(f"DEBUG: Available course codes in courses_df: {courses_df['code'].tolist()}")
+    
     for _, student in students_df.iterrows():
         student_id = student['student_id']
         enrolled_courses = str(student['enrolled_courses'])
@@ -57,6 +59,7 @@ def parse_csvs(students_csv_path, courses_csv_path, rooms_csv_path):
         # Split by various separators
         course_codes = re.split(r'[,;|/\s]+', enrolled_courses)
         course_codes = [code.strip() for code in course_codes if code.strip()]
+        print(f"DEBUG: Parsed course codes: {course_codes}")
         
         for course_code in course_codes:
             # Find course_id from courses_df
@@ -64,8 +67,19 @@ def parse_csvs(students_csv_path, courses_csv_path, rooms_csv_path):
             if not course_match.empty:
                 course_id = course_match.iloc[0]['course_id']
                 enrollments.append({'student_id': student_id, 'course_id': course_id})
+                print(f"DEBUG: Added enrollment: student_id={student_id}, course_id={course_id}")
+            else:
+                print(f"DEBUG: Course code '{course_code}' not found in courses_df")
     
     enrollments_df = pd.DataFrame(enrollments)
+    print(f"DEBUG: Created enrollments_df with {len(enrollments_df)} rows")
+    if len(enrollments_df) > 0:
+        print(f"DEBUG: Enrollments columns: {list(enrollments_df.columns)}")
+        print(f"DEBUG: First few enrollments:\n{enrollments_df.head()}")
+    else:
+        print("DEBUG: No enrollments created - check course code matching!")
+    
+    print(f"DEBUG: Final result - Students: {len(students_df)}, Courses: {len(courses_df)}, Rooms: {len(rooms_df)}, Enrollments: {len(enrollments_df)}")
     
     return {
         'students': students_df,
